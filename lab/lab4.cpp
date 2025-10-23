@@ -34,7 +34,7 @@ class Stack {
 
 };
 
-class Queue {
+class CircularQueue {
     private:
     bool isEmpty() {
         return (this->tail == this->head && this->elementCounter == 0);
@@ -49,7 +49,7 @@ class Queue {
     int head;
     int elementCounter;
 
-    Queue() {
+    CircularQueue() {
         this->tail = 0;
         this->head = 0;
         this->elementCounter =0;
@@ -59,7 +59,7 @@ class Queue {
         if (this->tail + 1 > 6) {
             this->tail = 0;
         }
-        if (isFull()) {
+        if (this->isFull()) {
             cout << "Queue is full\n";
             return;
         }
@@ -71,7 +71,7 @@ class Queue {
         if (this->head + 1 > 6) {
             this->head = 0;
         }
-        if (isEmpty()) {
+        if (this->isEmpty()) {
             cout << "Queue is empty\n";
             return -99;
         }
@@ -111,7 +111,7 @@ int main() {
     cout << "Popped Element: " << x << "\n";
     x = s.pop(); //Should Return empty stack
 
-    Queue q;
+    CircularQueue q;
     q.enqueue(1);
     q.enqueue(2);
     q.enqueue(3);
@@ -121,6 +121,7 @@ int main() {
     q.enqueue(1); // Should return full queue
     x = q.dequeue();
     cout << "Dequeued element: " << x << "\n";
+    q.enqueue(7);
     q.enqueue(7);
     q.dequeue();
     q.dequeue();

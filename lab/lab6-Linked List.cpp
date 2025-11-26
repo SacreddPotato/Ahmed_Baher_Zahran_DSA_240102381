@@ -94,7 +94,7 @@ class LinkedList {
             }
 
             if (this->head->next == nullptr) {
-                temp = this->head->next;
+                temp = this->head;
                 this->head = nullptr;
                 delete temp;
                 numOfElements--;
@@ -198,22 +198,23 @@ class LinkedList {
                 return;
             }
 
-            vector<Node*> toBeDeleted;
             Node* curr = this->head;
             Node* startNode;
+            Node* temp;
 
             for (int i = 0; i <= endIndx; i++) {
                 if (i == startIndx - 1) {
                     startNode = curr;
                 }
                 if (i >= startIndx) {
-                    toBeDeleted.push_back(curr);
+                    temp = curr;
+                    curr = curr->next;
+                    delete temp;
+                    numOfElements--;
+                    continue;
                 }
-                curr = curr->next;
             }
             startNode->next = curr;
-
-            delete &toBeDeleted;
         }
         
         int at(int index) {

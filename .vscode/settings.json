@@ -149,6 +149,7 @@
     "syncstream": "cpp",
     "thread": "cpp",
     "typeindex": "cpp",
-    "valarray": "cpp"
+    "valarray": "cpp",
+    "doubly-linked-list": "cpp"
   }
 }

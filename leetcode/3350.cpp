@@ -28,8 +28,8 @@ public:
             }
         }
 
-        for (auto& info1 : subarrays) {
-            for (auto& info2 : subarrays) {
+        for (auto info1 : subarrays) {
+            for (auto info2 : subarrays) {
                 if (info1.startIndex + info1.subarray.size() == info2.startIndex 
                     && info1.subarray.size() == info2.subarray.size()) {
                     k = max(k, (int)info1.subarray.size());

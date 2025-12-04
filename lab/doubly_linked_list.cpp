@@ -14,14 +14,14 @@ struct Node {
     }
 };
 
-class LinkedList {
+class DoublyLinkedList {
     private:
     Node* head;
     Node* tail;
     int numOfElements;  
     
     public:
-        LinkedList() {
+        DoublyLinkedList() {
             this->head = nullptr;
             this->tail = nullptr;
             this->numOfElements = 0;
@@ -47,6 +47,10 @@ class LinkedList {
         }
 
         void addAtIndex(int index, int x) {
+            if (index < 0 || index >= numOfElements) {
+                cout << "Index out of bounds";
+                return;
+            }
             Node* newNode = new Node(x);
             Node* current = this->head;
             if (index == 0) {
@@ -101,6 +105,7 @@ class LinkedList {
             }
 
             if (!helper) {
+                cout << "Value not found in list";
                 return;
             }
 
@@ -116,6 +121,10 @@ class LinkedList {
         }
 
         void popAtIndex(int index) {
+            if (index < 0 || index >= numOfElements) {
+                cout << "Index out of bounds";
+                return;
+            }
             Node* curr = this->head;
             if (index == 0) {
                 this->head = this->head->next;
@@ -216,6 +225,11 @@ class LinkedList {
         }
         
         Node* at(int index) {
+            if (index < 0 || index >= numOfElements) {
+                cout << "Index out of bounds";
+                return nullptr;
+            }
+
             if (index == 0 && this->head != nullptr) {
                 return this->head;
             }
@@ -251,7 +265,7 @@ class LinkedList {
 };
 
 int main() {
-    LinkedList list = LinkedList();
+    DoublyLinkedList list = DoublyLinkedList();
     list.add(1);
     list.add(2);
     list.add(3);

@@ -1,12 +1,13 @@
 #include <iostream>
 #include <string>
+#include <cctype>
 
 using namespace std;
 
 struct StackNode {
     StackNode* next;
-    int val;
-    StackNode(int x) {
+    char val;
+    StackNode(char x) {
         this->val = x;
         this->next = nullptr;
     }
@@ -19,46 +20,133 @@ class Stack {
     public:
         Stack() {
             this->top = nullptr;
-            this->numOfElements = 0;
         }
 
         void push(int x) {
             if (this->top == nullptr) {
                 this->top = new StackNode(x);
-                this->numOfElements++;
                 return;
             }
 
             StackNode* newNode = new StackNode(x);
             newNode->next = this->top;
             this->top = newNode;
-            this->numOfElements++;
         }
 
-        int pop() {
+        char pop() {
             if (this->top == nullptr) {
-                cout << "Stack is empty!";
-                return -99;
+                cout << "Stack is empty!\n";
+                return ' ';
             }
 
             StackNode* temp = this->top;
             int val = temp->val;
             this->top = this->top->next;
             delete temp;
-            this->numOfElements--;
             return val;
         }
 
-        int peek() {
+        char peek() {
             if (this->top == nullptr) {
-                cout << "Stack is empty!";
-                return -99;
+                cout << "Stack is empty!\n";
+                return ' ';
             }
 
             return this->top->val;            
         }
 
-        string infixToPostfix(string expression) {
-            
+        bool isEmpty() {
+            return this->top == nullptr;
         }
 };
+
+int precedence(char op) {
+    if (op == '+' || op == '-') return 1;
+    if (op == '*' || op == '/') return 2;
+    return 0;
+}
+
+string infixToPostfix(string expression) {
+    Stack operators;
+    string postfix = "";
+
+    for (char ch: expression) {
+        if (ch == ' ') {
+            continue;
+        }
+
+        if (isalnum(ch)) {
+            postfix += ch;
+
+        } else if (ch == '(') {
+            postfix += ' ';
+            operators.push(ch);
+
+        } else if (ch == ')') {
+            postfix += ' ';
+            while (!operators.isEmpty() || operators.peek() != '(') {
+                postfix += operators.pop();
+            }
+            operators.pop();
+
+        } else {
+            postfix += ' ';
+            while(!operators.isEmpty() && precedence(operators.peek()) >= precedence(ch)) {
+                postfix += operators.pop();
+                postfix += ' ';
+            }
+            operators.push(ch);
+        }
+    }
+
+    postfix += ' ';
+    while (!operators.isEmpty()) {
+        postfix += operators.pop();
+    }
+
+    return postfix;
+}
+
+int evaluatePostfix(string expression) {
+    Stack values;
+
+    for (char ch: expression) {
+        if (ch == ' ') {
+            continue;
+        }
+
+        if (isalnum(ch)) {
+            values.push(ch - '0');
+
+        } else {
+            int val2 = values.pop();
+            int val1 = values.pop();
+            int result = 0;
+
+            switch (ch) {
+                case '+':
+                    result = val1 + val2;
+                    break;
+                case '-':
+                    result = val1 - val2;
+                    break;
+                case '*':
+                    result = val1 * val2;
+                    break;
+                case '/':
+                    result = val1 / val2;
+                    break;
+            }
+
+            values.push(result);
+        }
+    }
+
+    return values.pop();
+}
+
+
+int main() {
+    cout << evaluatePostfix(infixToPostfix("3 + 4 * 7"));
+    return 0;
+}
